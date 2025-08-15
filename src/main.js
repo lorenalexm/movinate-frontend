@@ -1,10 +1,10 @@
 import { createApp } from "vue"
-import { createMemoryHistory, createRouter } from "vue-router"
+import { createWebHistory, createRouter } from "vue-router"
 import App from "./App.vue"
 import { routes } from "./routes"
 
-const router = createRouter({
-	history: createMemoryHistory(),
+let router = createRouter({
+	history: createWebHistory(),
 	routes
 })
 
