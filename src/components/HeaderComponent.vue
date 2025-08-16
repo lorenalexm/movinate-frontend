@@ -1,9 +1,9 @@
 <script setup>
 import { useRouter } from "vue-router"
-import { useStore } from "../stores"
+import { useAuthStore } from "../stores/auth"
 
 let router = useRouter()
-let store = useStore()
+let store = useAuthStore()
 
 /**
  * Clears the authToken from stored locations, and redirects to the home view.

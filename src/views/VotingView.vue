@@ -1,11 +1,11 @@
 <script setup>
 import { onMounted } from "vue"
 import { useRouter } from "vue-router"
-import { useStore } from "../stores"
+import { useDataStore } from "../stores/data"
 import { getLibraryItems } from "../libs/plex"
 
 let router = useRouter()
-let store = useStore()
+let store = useDataStore()
 
 onMounted(async () => {
 	if (!store.currentLibrary) {

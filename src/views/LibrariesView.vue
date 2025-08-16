@@ -1,11 +1,11 @@
 <script setup>
 import { computed, onMounted } from "vue"
 import { useRouter } from "vue-router"
-import { useStore } from "../stores"
+import { useDataStore } from "../stores/data"
 import { getLibraryList } from "../libs/plex"
 
 let router = useRouter()
-let store = useStore()
+let store = useDataStore()
 let libraries = computed(() => store.libraries)
 
 /**

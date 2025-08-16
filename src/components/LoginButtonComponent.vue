@@ -2,11 +2,11 @@
 import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { getLoginUrl, loginCheck } from "../libs/plex"
-import { useStore } from "../stores"
+import { useAuthStore } from "../stores/auth"
 
 let router = useRouter()
 let processing = ref(false);
-let store = useStore()
+let store = useAuthStore()
 
 /**
  * Takes the user through the Plex.tv login flow.

@@ -3,7 +3,7 @@ import { createWebHistory, createRouter } from "vue-router"
 import { createPinia } from "pinia"
 import App from "./App.vue"
 import { routes } from "./routes"
-import { useStore } from "./stores"
+import { useAuthStore } from "./stores/auth"
 
 let router = createRouter({
 	history: createWebHistory(),
@@ -11,7 +11,7 @@ let router = createRouter({
 })
 
 router.beforeEach((to) => {
-	let store = useStore()
+	let store = useAuthStore()
 	if (to.meta.requiresAuth && !store.authToken) {
 		return "/"
 	}
