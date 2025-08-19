@@ -4,6 +4,7 @@ import { createPinia } from "pinia"
 import App from "./App.vue"
 import { routes } from "./routes"
 import { useAuthStore } from "./stores/auth"
+import sockets from "./plugins/socket"
 
 let router = createRouter({
 	history: createWebHistory(),
@@ -20,4 +21,5 @@ router.beforeEach((to) => {
 let app = createApp(App)
 app.use(router)
 app.use(createPinia())
+app.use(sockets)
 app.mount("#app")
