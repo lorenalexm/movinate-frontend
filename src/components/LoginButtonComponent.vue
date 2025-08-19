@@ -2,21 +2,25 @@
 import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { getLoginUrl, loginCheck } from "../libs/plex"
+import { useConnectionStore } from "../stores/connection"
 import { useAuthStore } from "../stores/auth"
 
 let router = useRouter()
 let processing = ref(false);
-let store = useAuthStore()
+let connectionStore = useConnectionStore()
+let authStore = useAuthStore()
 
 /**
  * Takes the user through the Plex.tv login flow.
- * Redirects to the Servers view if authToken already stored.
+ * Connects to the socket server if login successful or authToken already stored.
+ * Redirects to the Rooms view if authToken already stored.
  */
 async function onClicked() {
 	processing.value = true;
 
-	if (store.authToken) {
-		await router.push("/servers")
+	if (authStore.authToken) {
+		connectionStore.connectSocket()
+		await router.push("/rooms")
 		return
 	}
 
@@ -28,8 +32,9 @@ async function onClicked() {
 	window.open(data.uri, "_blank").focus()
 	loginCheck(data.id, data.code)
 		.then((authToken) => {
-			store.authToken = authToken
-			router.push("/servers")
+			authStore.authToken = authToken
+			connectionStore.connectSocket()
+			router.push("/rooms")
 		})
 		.catch((error) => {
 			console.error(error)

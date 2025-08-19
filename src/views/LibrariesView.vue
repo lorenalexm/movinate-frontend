@@ -2,26 +2,34 @@
 import { computed, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import { useDataStore } from "../stores/data"
+import { useConnectionStore } from "../stores/connection"
 import { getLibraryList } from "../libs/plex"
 
 let router = useRouter()
-let store = useDataStore()
-let libraries = computed(() => store.libraries)
+let dataStore = useDataStore()
+let connectionStore = useConnectionStore()
+let libraries = computed(() => dataStore.libraries)
 
 /**
  * Sets the current library within the store, and redirects to the voting view.
  * @param library The library to be set as current.
  */
 function onClicked(library) {
-	store.currentLibrary = library
-	router.push("/vote")
+	connectionStore.updateUserLibrary(library, (success, message) => {
+		if (success) {
+			router.push("/vote")
+		} else {
+			console.error(message)
+		}
+	})
 }
 
 onMounted(async () => {
-	if (!store.currentServer) {
+	if (!dataStore.currentServer) {
 		await router.push("/servers")
 	}
-	store.libraries = await getLibraryList(store.currentServer.publicAddress, store.authToken)
+
+	dataStore.libraries = await getLibraryList(dataStore.currentServer.publicAddress, dataStore.authToken)
 })
 </script>
 

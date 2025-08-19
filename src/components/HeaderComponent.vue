@@ -1,16 +1,19 @@
 <script setup>
 import { useRouter } from "vue-router"
 import { useAuthStore } from "../stores/auth"
+import { useConnectionStore } from "../stores/connection"
 
 let router = useRouter()
-let store = useAuthStore()
+let connectionStore = useConnectionStore()
+let authStore = useAuthStore()
 
 /**
  * Clears the authToken from stored locations, and redirects to the home view.
  */
 function logoutClicked() {
+	connectionStore.disconnectSocket()
 	localStorage.clear()
-	store.authToken = null
+	authStore.authToken = null
 	if (router.currentRoute != "/") {
 		router.push("/")
 	}
@@ -23,7 +26,7 @@ function logoutClicked() {
 			<p>Movinate</p>
 		</div>
 		<nav class="ms-menu-link">
-			<button v-if="store.authToken" @click="logoutClicked" class="ms-btn ms-action2">Logout</button>
+			<button v-if="authStore.authToken" @click="logoutClicked" class="ms-btn ms-action2">Logout</button>
 		</nav>
 	</div>
 </template>

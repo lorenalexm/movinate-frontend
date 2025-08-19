@@ -1,11 +1,11 @@
 <script setup>
 import { computed, onMounted } from "vue"
 import { useRouter } from "vue-router";
-import { useDataStore } from "../stores/data"
+import { useConnectionStore } from "../stores/connection"
 import { getServerList } from "../libs/plex";
 
 let router = useRouter()
-let store = useDataStore()
+let store = useConnectionStore()
 let servers = computed(() => store.servers)
 
 /**
@@ -13,8 +13,13 @@ let servers = computed(() => store.servers)
  * @param server The server to be set as current.
  */
 function onClicked(server) {
-	store.currentServer = server
-	router.push("/libraries")
+	store.updateUserServer(server, (success, message) => {
+		if (success) {
+			router.push("/libraries")
+		} else {
+			console.error(message)
+		}
+	})
 }
 
 onMounted(async () => {
