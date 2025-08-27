@@ -28,13 +28,15 @@ function onClick(toast) {
 <template>
 	<Teleport to="body">
 		<Transition name="toast">
-			<div v-if="store.toasts.length > 0">
+			<div v-if="store.toasts.length > 0" class="toasts">
 				<TransitionGroup name="toast" tag="div">
 					<div v-for="toast in store.toasts" :key="toast.id">
-						<div class="ms-alert" :class="background(toast)">
+						<div class="ms-alert ms-pb-2" :class="background(toast)">
 							<span class="ms-close" @click="onClick(toast)"></span>
-							<h5>{{ toast.title }}</h5>
-							<p>{{ toast.message }}</p>
+							<hgroup>
+								<h5>{{ toast.title }}</h5>
+								<p>{{ toast.message }}</p>
+							</hgroup>
 						</div>
 					</div>
 				</TransitionGroup>
@@ -44,7 +46,7 @@ function onClick(toast) {
 </template>
 
 <style scoped>
-.toast {
+.toasts {
 	position: fixed;
 	bottom: 1rem;
 	right: 1rem;

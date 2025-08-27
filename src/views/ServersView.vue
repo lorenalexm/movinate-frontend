@@ -4,12 +4,14 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth"
 import { useDataStore } from "../stores/data"
 import { useConnectionStore } from "../stores/connection"
+import { useToastStore } from "../stores/toast"
 import { getServerList } from "../libs/plex"
 
 let router = useRouter()
 let authStore = useAuthStore()
 let dataStore = useDataStore()
 let connectionStore = useConnectionStore()
+let toastStore = useToastStore()
 let servers = computed(() => dataStore.servers)
 
 /**
@@ -28,7 +30,11 @@ function onClicked(server) {
 
 onMounted(async () => {
 	if (!connectionStore.socketConnected) {
-		await router.push("/rooms")
+		await router.push("/")
+		toastStore.error({
+			title: "Unable to connect!",
+			message: "Something went wrong, and we cannot connect to the server!"
+		})
 		return
 	}
 	dataStore.servers = await getServerList(authStore.authToken)
