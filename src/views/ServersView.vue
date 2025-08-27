@@ -6,6 +6,7 @@ import { useDataStore } from "../stores/data"
 import { useConnectionStore } from "../stores/connection"
 import { useToastStore } from "../stores/toast"
 import { getServerList } from "../libs/plex"
+import ServerButtonComponent from "../components/ServerButtonComponent.vue"
 
 let router = useRouter()
 let authStore = useAuthStore()
@@ -13,20 +14,6 @@ let dataStore = useDataStore()
 let connectionStore = useConnectionStore()
 let toastStore = useToastStore()
 let servers = computed(() => dataStore.servers)
-
-/**
- * Sets the current server within the store, and redirects to the libraries view.
- * @param server The server to be set as current.
- */
-function onClicked(server) {
-	connectionStore.updateUserServer(server, (success, message) => {
-		if (success) {
-			router.push("/libraries")
-		} else {
-			console.error(message)
-		}
-	})
-}
 
 onMounted(async () => {
 	if (!connectionStore.socketConnected) {
@@ -42,12 +29,18 @@ onMounted(async () => {
 </script>
 
 <template>
-	<div>
-		<p>Servers View</p>
-		<div>
-			<button v-for="server in servers" :key="server.clientIdentifier" @click="onClicked(server)" class="ms-btn ms-primary ms-medium">
-				{{ server.name }}
-			</button>
+	<div v-if="servers">
+		<div class="ms-card ms-fill">
+			<div class="ms-card-title">
+				<h3>🌐 Pick a Server</h3>
+			</div>
+			<div class="ms-card-content">
+				<p>
+					This is where your movie magic lives. Just tap the server you want to use — it’s literally that easy. 
+					No dropdowns, no confusing setup, just a list of your servers waiting to party. 🎉
+				</p>
+			</div>
 		</div>
+		<ServerButtonComponent :servers="servers"/>
 	</div>
 </template>
