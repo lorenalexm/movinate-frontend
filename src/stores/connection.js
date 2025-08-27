@@ -24,7 +24,7 @@ import { useDataStore } from "./data"
  * @param {string} message Any message tied to the success status.
  */
 
-export let useConnectionStore = defineStore("app", {
+export let useConnectionStore = defineStore("connection", {
 	state: () => ({
 		dataStore: useDataStore(),
 		socketConnected: false,

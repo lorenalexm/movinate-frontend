@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-export let useDataStore = defineStore("app", {
+export let useDataStore = defineStore("data", {
 	state: () => ({
 		servers: [],
 		currentServer: null,
