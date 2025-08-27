@@ -22,7 +22,7 @@ async function onClicked() {
 
 	if (authStore.authToken) {
 		connectionStore.connectSocket()
-		await router.push("/rooms")
+		await router.push("/servers")
 		return
 	}
 
@@ -44,9 +44,13 @@ async function onClicked() {
 
 	popup.focus()
 	loginCheck(data.id, data.code)
-		.then((authToken) => {
+		.then(async (authToken) => {
 			authStore.authToken = authToken
 			connectionStore.connectSocket()
+			await new Promise((resolve) => {
+				setTimeout(resolve, 100)
+			})
+			connectionStore.createRoom()
 			router.push("/servers")
 		})
 		.catch((error) => {
