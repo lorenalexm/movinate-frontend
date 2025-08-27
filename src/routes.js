@@ -1,5 +1,4 @@
 import HomeView from "./views/HomeView.vue"
-import RoomsView from "./views/RoomsView.vue"
 import ServersView from "./views/ServersView.vue"
 import LibrariesView from "./views/LibrariesView.vue"
 import VotingView from "./views/VotingView.vue"
@@ -8,13 +7,6 @@ export let routes = [
 	{
 		path: "/",
 		component: HomeView
-	},
-	{
-		path: "/rooms",
-		component: RoomsView,
-		meta: {
-			requiresAuth: true
-		}
 	},
 	{
 		path: "/servers",
