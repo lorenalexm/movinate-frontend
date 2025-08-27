@@ -37,8 +37,6 @@ export let useConnectionStore = defineStore("connection", {
 		 */
 		connectSocket() {
 			if (!this.socketConnected) {
-				socket.connect()
-
 				socket.on("connect", () => {
 					this.socketConnected = true
 				})
@@ -46,6 +44,8 @@ export let useConnectionStore = defineStore("connection", {
 				socket.on("disconnect", () => {
 					this.socketConnected = false
 				})
+				
+				socket.connect()
 			}
 		},
 		/**
