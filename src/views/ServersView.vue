@@ -1,19 +1,23 @@
 <script setup>
 import { computed, onMounted } from "vue"
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth"
+import { useDataStore } from "../stores/data"
 import { useConnectionStore } from "../stores/connection"
-import { getServerList } from "../libs/plex";
+import { getServerList } from "../libs/plex"
 
 let router = useRouter()
-let store = useConnectionStore()
-let servers = computed(() => store.servers)
+let authStore = useAuthStore()
+let dataStore = useDataStore()
+let connectionStore = useConnectionStore()
+let servers = computed(() => dataStore.servers)
 
 /**
  * Sets the current server within the store, and redirects to the libraries view.
  * @param server The server to be set as current.
  */
 function onClicked(server) {
-	store.updateUserServer(server, (success, message) => {
+	connectionStore.updateUserServer(server, (success, message) => {
 		if (success) {
 			router.push("/libraries")
 		} else {
@@ -23,7 +27,11 @@ function onClicked(server) {
 }
 
 onMounted(async () => {
-	store.servers = await getServerList(store.authToken)
+	if (!connectionStore.socketConnected) {
+		await router.push("/rooms")
+		return
+	}
+	dataStore.servers = await getServerList(authStore.authToken)
 })
 </script>
 
