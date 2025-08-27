@@ -22,12 +22,22 @@ async function onClicked() {
 
 	if (authStore.authToken) {
 		connectionStore.connectSocket()
+		await new Promise((resolve) => {
+			setTimeout(resolve, 100)
+		})
+		connectionStore.createRoom()
 		await router.push("/servers")
 		return
 	}
 
 	let data = await getLoginUrl()
 	if (!data) {
+		toastStore.warning({
+			title: "Plex.tv Issue!",
+			message: "It appears as though we can't talk to Plex.tv right now. It isn't us, it's them. Check back in a bit to see if we've smoothed things over!",
+			timeout: 5000
+		})
+		processing.value = false
 		return
 	}
 
@@ -51,7 +61,7 @@ async function onClicked() {
 				setTimeout(resolve, 100)
 			})
 			connectionStore.createRoom()
-			router.push("/servers")
+			await router.push("/servers")
 		})
 		.catch((error) => {
 			console.error(error)
@@ -62,18 +72,8 @@ async function onClicked() {
 </script>
 
 <template>
-	<div class="ms-card ms-fill">
-		<div class="ms-card-title">
-			<h2>Create a room</h2>
-		</div>
-		<div class="ms-card-content">
-			<p>Got Plex? Great! Use that to login here and get started with your movie night!</p>
-		</div>
-		<div class="ms-card-btn">
-			<button class="ms-btn ms-primary ms-medium" @click="onClicked" :disabled="processing">
-				<div class="ms-loading ms-primary ms-small" v-if="processing"></div>
-				Login with Plex
-			</button>
-		</div>
-	</div>
+	<button class="ms-btn ms-primary ms-medium" @click="onClicked" :disabled="processing">
+		<div class="ms-loading ms-primary ms-small" v-if="processing"></div>
+		Login with Plex
+	</button>
 </template>
