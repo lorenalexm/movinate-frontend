@@ -4,6 +4,7 @@ import { createPinia } from "pinia"
 import App from "./App.vue"
 import { routes } from "./routes"
 import { useAuthStore } from "./stores/auth"
+import { useToastStore } from "./stores/toast"
 import sockets from "./plugins/socket"
 
 let router = createRouter({
@@ -12,8 +13,13 @@ let router = createRouter({
 })
 
 router.beforeEach((to) => {
-	let store = useAuthStore()
-	if (to.meta.requiresAuth && !store.authToken) {
+	let authStore = useAuthStore()
+	let toastStore = useToastStore()
+	if (to.meta.requiresAuth && !authStore.authToken) {
+		toastStore.error({
+			title: "Not logged in!",
+			message: "It seems at some point you were logged out. Let's get you voting again!"
+		})
 		return "/"
 	}
 })
