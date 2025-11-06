@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { socket } from "../plugins/socket"
 import { useDataStore } from "./data"
+import { socketMessages } from "../libs/socketMessages"
 
 /**
  * When a new room is created. This is an optional callback
@@ -37,11 +38,11 @@ export let useConnectionStore = defineStore("connection", {
 		 */
 		connectSocket() {
 			if (!this.socketConnected) {
-				socket.on("connect", () => {
+				socket.on(socketMessages.connect, () => {
 					this.socketConnected = true
 				})
 
-				socket.on("disconnect", () => {
+				socket.on(socketMessages.disconnect, () => {
 					this.socketConnected = false
 				})
 				
@@ -62,7 +63,7 @@ export let useConnectionStore = defineStore("connection", {
 		 */
 		createRoom(callback = null) {
 			if (this.socketConnected) {
-				socket.emit("createRoom", (response) => {
+				socket.emit(socketMessages.createRoom, (response) => {
 					this.roomId = response.id
 					callback?.()
 				})
@@ -76,7 +77,7 @@ export let useConnectionStore = defineStore("connection", {
 		 */
 		updateUserServer(server, callback) {
 			if (this.socketConnected) {
-				socket.emit("setUserServer", server, (response) => {
+				socket.emit(socketMessages.setUserServer, server, (response) => {
 					if (response.success) {
 						this.dataStore.currentServer = server
 					}
@@ -93,7 +94,7 @@ export let useConnectionStore = defineStore("connection", {
 		 */
 		updateUserLibrary(library, callback) {
 			if (this.socketConnected) {
-				socket.emit("setUserLibrary", library, (response) => {
+				socket.emit(socketMessages.setUserLibrary, library, (response) => {
 					if (response.success) {
 						this.dataStore.currentLibrary = library
 					}
