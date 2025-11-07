@@ -1,5 +1,6 @@
 <script setup>
 import LoginButtonComponent from "../components/LoginButtonComponent.vue"
+import JoinButtonComponent from "../components/JoinButtonComponent.vue"
 </script>
 
 <template>
@@ -12,6 +13,17 @@ import LoginButtonComponent from "../components/LoginButtonComponent.vue"
 		</div>
 		<div class="ms-card-btn">
 			<LoginButtonComponent />
+		</div>
+	</div>
+	<div class="ms-card ms-fill">
+		<div class="ms-card-title">
+			<h2>Join a room</h2>
+		</div>
+		<div class="ms-card-content">
+			<p>No Plex? No problem! Just input a room code you've been given and join in!</p>
+		</div>
+		<div class="ms-card-btn">
+			<JoinButtonComponent />
 		</div>
 	</div>
 </template>

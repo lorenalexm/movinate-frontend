@@ -10,6 +10,13 @@ import { socketMessages } from "../libs/socketMessages"
  */
 
 /**
+ * When a guest attempts to join an existing room.
+ * 
+ * @callback joinRoomCallback
+ * @param {boolean} success Was the room joined successfully.
+ */
+
+/**
  * When a user has their Plex.tv server updated.
  * 
  * @callback setUserServerCallback
@@ -66,6 +73,23 @@ export let useConnectionStore = defineStore("connection", {
 				socket.emit(socketMessages.createRoom, (response) => {
 					this.roomId = response.id
 					callback?.()
+				})
+			}
+		},
+		/**
+		 * Joins an existing room if it exists, otherwises sends a uncessfully value.
+		 * @param {string} id The Id of the room the guest wishes to join.
+		 * @param {joinRoomCallback} callback {@link joinRoomCallback}
+		 */
+		joinRoom(id, callback) {
+			if (this.socketConnected) {
+				socket.emit(socketMessages.joinRoom, id, (response) => {
+					if (response.success) {
+						this.dataStore.currentServer = response.server
+						this.dataStore.currentLibrary = response.library
+						this.roomId = id
+					}
+					callback(response.success)
 				})
 			}
 		},
