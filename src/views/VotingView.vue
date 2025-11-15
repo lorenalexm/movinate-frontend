@@ -7,7 +7,7 @@ import { useToastStore } from "../stores/toast"
 import { useConnectionStore } from "../stores/connection"
 import { socketMessages } from "../libs/socketMessages"
 import { getLibraryItems } from "../libs/plex"
-import { FlashCards } from "vue3-flashcards"
+import CardsComponent from "../components/CardsComponent.vue"
 
 let router = useRouter()
 let authStore = useAuthStore()
@@ -53,17 +53,7 @@ function onReject(media) {
  */
 function onConsensusReached(mediaId) {
 	console.log("Consensus has been reached!")
-}
-
-/**
- * Will attempt to pull the boxart of the media item from the owners server.
- * @param media The media item to pull box art.
- */
-function getMediaThumbnail(media) {
-	let server = dataStore.currentServer.connections.find((connection) => {
-		return connection.local == false
-	})
-	return `${server.uri}${media.thumb}?X-Plex-Token=${token.value}`
+	console.log(`The chosen media is ${mediaId}`)
 }
 
 /**
@@ -123,38 +113,7 @@ onMounted(async () => {
 				</div>
 
 				<div class="col">
-					<div class="cards">
-						<FlashCards :items="media" :virtual-buffer="1" @approve="onApprove" @reject="onReject">
-							<template #default="{ item }">
-								<div class="card" :style="{ backgroundImage: `url(${getMediaThumbnail(item)})` }">
-									<div class="ms-card fullheight">
-										<div class="blurred-background">
-										<div class="ms-card-title">
-											<h3>{{ item.title }}</h3>
-										</div>
-										<div class="ms-card-body">
-											<p>{{ item.summary }}</p>
-										</div>
-										</div>
-										<div class="ms-card-button">
-											<button class="ms-btn ms-action">Reject</button>
-											<button class="ms-btn ms-action2">Approve</button>
-										</div>
-									</div>
-								</div>
-							</template>
-							<template #approve="{ delta }">
-								<div class="approve" :style="{ opacity: delta }">
-									<p>👌</p>
-								</div>
-							</template>
-							<template #reject="{ delta }">
-								<div class="reject" :style="{ opacity: delta }">
-									<p>🙅‍♀️</p>
-								</div>
-							</template>
-						</FlashCards>
-					</div>
+					<CardsComponent :media="media" :token="token" @approved="onApprove" @rejected="onReject" />
 				</div>
 
 				<div class="col">
