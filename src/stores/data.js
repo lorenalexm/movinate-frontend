@@ -35,6 +35,19 @@ export let useDataStore = defineStore("data", {
 
 			this.remoteServerConnection = connection
 			return connection
+		},
+		/**
+		 * Creates a URL for a media's boxart using an available remote server.
+		 * @param {string} token The Plex.tv token for access to a server.
+		 * @param {Object} media The media object.
+		 * @returns A URL string for a media's boxart, if available. Null if no connection to server.
+		 */
+		getMediaBoxArt(token, media) {
+			let connection = this.getRemoteServerConnection()
+			if(!connection) {
+				return null
+			}
+			return `${connection.uri}${media.thumb}?X-Plex-Token=${token}`
 		}
 	}
 })

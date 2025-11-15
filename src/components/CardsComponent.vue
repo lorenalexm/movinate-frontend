@@ -10,18 +10,6 @@ let props = defineProps({
 })
 
 /**
- * Will attempt to pull the boxart of the media item from the owners server.
- * @param media The media item to pull box art.
- */
-function getMediaThumbnail(media) {
-	let connection = dataStore.getRemoteServerConnection()
-	if (!connection) {
-		return
-	}
-	return `${connection.uri}${media.thumb}?X-Plex-Token=${props.token}`
-}
-
-/**
  * Emits an approved message to the parent object.
  * @param media The media item that was just voted on.
  */
@@ -40,9 +28,9 @@ function onReject(media) {
 
 <template>
 	<div class="cards">
-		<FlashCards :items="media" :virtual-buffer="1" @approve="onApprove" @reject="onReject">
+		<FlashCards :items="props.media" :virtual-buffer="1" @approve="onApprove" @reject="onReject">
 			<template #default="{ item }">
-				<div class="card" :style="{ backgroundImage: `url(${getMediaThumbnail(item)})` }">
+				<div class="card" :style="{ backgroundImage: `url(${dataStore.getMediaBoxArt(props.token, item)})` }">
 					<div class="ms-card fullheight">
 						<div class="blurred-background">
 						<div class="ms-card-title">
