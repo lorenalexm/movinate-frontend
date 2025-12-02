@@ -99,21 +99,68 @@ onMounted(async () => {
 
 <template>
 	<div v-if="media.length > 0">
-		<p>Voting Time!</p>
-		<p v-if="userCount > 0">There are currently {{ userCount }} users voting in this room!</p>
-		<p>The room Id for others to join is: {{ connectionStore.roomId }}</p>
-
 		<div class="container">
 			<div class="row">
-				<div class="col">
+				<div class="col-12 col-md-4 order-md-first">
+					<div class="ms-card ms-fill">
+						<div class="ms-card-content">
+							<hgroup>
+								<h6>Room Code: {{ connectionStore.roomId }}</h6>
+								<p>Share this code with friends so they can jump in and start swiping too. The more, the messier 👀</p>
+							</hgroup>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 order-first">
+					<div class="ms-card ms-fill">
+						<div class="ms-card-content">
+							<hgroup>
+								<h6>Swipe it like you mean it!</h6>
+								<p>
+									Swipe right if you’re down to watch it 🎬<br />
+									Swipe left if it’s a no from you 🙅‍♀️<br />
+									Once everyone swipes right on the same movie, it’s go-time!
+								</p>
+							</hgroup>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 order-md-last">
+					<div class="ms-card ms-fill">
+						<div class="ms-card-content">
+							<hgroup v-if="userCount > 1">
+								<h6>{{ userCount }} friends are currently swiping.</h6>
+								<p>And you're about to settle this once and for all.</p>
+							</hgroup>
+							<hgroup v-else>
+								<h6>Flying solo? That's cool... But movie night's better with friends.</h6>
+								<p>Share your room code - <b>{{ connectionStore.roomId }}</b> - and get your crew in here! Swiping is way more fun when you’re roasting movie choices together. Plus, you kinda need some matches to actually <i>watch</i> something. 😅</p>
+							</hgroup>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container" style="padding-top: 3rem;">
+			<div class="row">
+				<div class="col-12 col-md-4 order-last order-md-first">
+					<hgroup>
+						<h6>Hard Passes</h6>
+						<p>Nah. Nope. Never.</p>
+					</hgroup>
 					<MediaListComponent :media="rejected" :token="token" />
 				</div>
 
-				<div class="col">
+				<div class="col-12 col-md-4 order-first">
 					<CardsComponent :media="media" :token="token" @approved="onApprove" @rejected="onReject" />
 				</div>
 
-				<div class="col">
+				<div class="col-12 col-md-4 order-md-last">
+					<hgroup>
+						<h6>Your Picks</h6>
+						<p>The ones you'd totally watch.</p>
+					</hgroup>
 					<MediaListComponent :media="approved" :token="token" />
 				</div>
 			</div>

@@ -21,12 +21,16 @@ function logoutClicked() {
 </script>
 
 <template>
-	<div class="ms-menu">
-		<div class="ms-menu-logo">
-			<p>Movinate</p>
+	<div class="ms-card ms-fill">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col">
+					<h1>Movinate</h1>
+				</div>
+				<div class="col d-flex justify-content-end">
+					<button v-if="authStore.authToken" @click="logoutClicked" class="ms-btn ms-action2">Logout</button>
+				</div>
+			</div>
 		</div>
-		<nav class="ms-menu-link">
-			<button v-if="authStore.authToken" @click="logoutClicked" class="ms-btn ms-action2">Logout</button>
-		</nav>
 	</div>
 </template>
