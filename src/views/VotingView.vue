@@ -8,6 +8,7 @@ import { useConnectionStore } from "../stores/connection"
 import { socketMessages } from "../libs/socketMessages"
 import { getLibraryItems } from "../libs/plex"
 import CardsComponent from "../components/CardsComponent.vue"
+import MediaListComponent from "../components/MediaListComponent.vue"
 
 let router = useRouter()
 let authStore = useAuthStore()
@@ -105,11 +106,7 @@ onMounted(async () => {
 		<div class="container">
 			<div class="row">
 				<div class="col">
-					<ul>
-						<li v-for="media in rejected" :key="media.ratingKey">
-							{{ media.title }}
-						</li>
-					</ul>
+					<MediaListComponent :media="rejected" :token="token" />
 				</div>
 
 				<div class="col">
@@ -117,11 +114,7 @@ onMounted(async () => {
 				</div>
 
 				<div class="col">
-					<ul>
-						<li v-for="media in approved" :key="media.ratingKey">
-							{{ media.title }}
-						</li>
-					</ul>
+					<MediaListComponent :media="approved" :token="token" />
 				</div>
 			</div>
 		</div>
@@ -130,59 +123,3 @@ onMounted(async () => {
 		<p>Loading</p>
 	</div>
 </template>
-
-<style lang="css" scoped>
-.cards {
-	padding-top: 0px;
-}
-
-.cards .reject {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(197, 80, 37, 0.9);
-	border-radius: 8px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 6rem;
-}
-
-.cards .approve {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(175, 211, 58, 0.9);
-	border-radius: 8px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 6rem;
-}
-
-.card {
-	aspect-ratio: 2/3;
-	user-select: none;
-	background-position: center;
-	background-size: cover;
-	border-radius: 8px;
-	padding: 16px;
-}
-
-.card .blurred-background {
-	border-radius: 12px;
-	padding: 4px;
-	margin-bottom: 8px;
-	background-color: rgba(255, 255, 255, 0.8);
-	backdrop-filter: blur(8px);
-	-webkit-backdrop-filter: blur(8px);
-}
-
-.fullheight {
-	height: 100%;
-}
-</style>
